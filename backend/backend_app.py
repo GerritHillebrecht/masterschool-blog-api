@@ -48,6 +48,25 @@ def add_post():
     return jsonify(post), 201
 
 
+@app.delete("/api/posts/<int:post_id>")
+def delete_post(post_id: int):
+    global POSTS
+    if not post_id or post_id not in [p.get("id") for p in POSTS]:
+        return jsonify({
+            "message": f'Post with id <{post_id}> not found.'
+        }), 404
+
+    POSTS = [
+        post
+        for post in POSTS
+        if post.get("id") != post_id
+    ]
+
+    return jsonify({
+        "message": f"Post with id <{post_id}> has been deleted successfully."
+    }), 200
+
+
 def validate_post_data(body):
     return isinstance(body, dict) and all(key in body for key in POST_DATA)
 
