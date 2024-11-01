@@ -13,8 +13,38 @@ POSTS = [
 
 
 @app.get('/api/posts')
-def get_posts():
-    return jsonify(POSTS), 200
+def get_posts() -> list[dict]:
+    """
+    Returns all saved posts from temporary variable POSTS, so keep in mind there's regular resets
+    and data loss. Optionally sorts the results by given query params sort and direction.
+    No pagination for now.
+    :return: The potentially sorted posts.
+    """
+    # Usually I'd go with the default-values "id" and "asc" for sort and direction
+    # but the assignment specifically wants it to be FiFo, so no alteration.
+    sort = request.args.get("sort")
+    direction = request.args.get("direction")
+
+    if not sort or not direction:
+        return jsonify(POSTS), 200
+
+    if sort not in POST_DATA:
+        return jsonify({
+            "message": f'Invalid sort key.'
+        }), 422
+
+    if direction not in ["desc", "asc"]:
+        return jsonify({
+            "message": f'Invalid direction argument. Provide "desc" or "asc".'
+        }), 422
+
+    return jsonify(list(
+        sorted(
+            POSTS,
+            key=lambda post: post.get(sort),
+            reverse=direction == "desc"
+        )
+    ))
 
 
 @app.post('/api/posts')
