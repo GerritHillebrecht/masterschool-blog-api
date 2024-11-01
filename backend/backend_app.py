@@ -13,7 +13,7 @@ POSTS = [
 
 
 @app.get('/api/posts')
-def get_posts() -> list[dict]:
+def get_posts():
     """
     Returns all saved posts from temporary variable POSTS, so keep in mind there's regular resets
     and data loss. Optionally sorts the results by given query params sort and direction.
@@ -49,6 +49,10 @@ def get_posts() -> list[dict]:
 
 @app.post('/api/posts')
 def add_post():
+    """
+    Takes in JSON body to add a post to the storage.
+    :return: The added post including the generated id.
+    """
     body = request.get_json()
 
     if not validate_post_data(body):
@@ -79,6 +83,11 @@ def add_post():
 
 @app.delete("/api/posts/<int:post_id>")
 def delete_post(post_id: int):
+    """
+    Removes the post with the given post_id from the storage.
+    :param post_id: The id of the post to delete.
+    :return: A message object.
+    """
     global POSTS
     if not post_id or post_id not in [p.get("id") for p in POSTS]:
         return jsonify({
@@ -98,6 +107,11 @@ def delete_post(post_id: int):
 
 @app.put("/api/posts/<int:post_id>")
 def update_post(post_id: int):
+    """
+    Updates a post based on the path id and provided json body.
+    :param post_id: The id passed according to the path.
+    :return: Returns the updated post.
+    """
     try:
         idx = [p.get("id") for p in POSTS].index(post_id)
     except ValueError:
@@ -122,6 +136,10 @@ def update_post(post_id: int):
 
 @app.get("/api/posts/search")
 def search_posts():
+    """
+    Filters posts by given title and content arguments passed via query params.
+    :return: Filtered posts.
+    """
     search_title = request.args.get("title", "").lower()
     search_content = request.args.get("content", "").lower()
 
@@ -132,6 +150,11 @@ def search_posts():
 
 
 def validate_post_data(body):
+    """
+    Pre-checks request body for validity and completeness. No sanity checks.
+    :param body: The request body.
+    :return: Boolean value for whether the post can be created based on the given data.
+    """
     return isinstance(body, dict) and all(key in body for key in POST_DATA)
 
 
