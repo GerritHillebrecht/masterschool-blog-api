@@ -90,6 +90,17 @@ def update_post(post_id: int):
     return POSTS[idx], 200
 
 
+@app.get("/api/posts/search")
+def search_posts():
+    search_title = request.args.get("title", "").lower()
+    search_content = request.args.get("content", "").lower()
+
+    return jsonify(list(filter(
+        lambda post: search_title in post.get("title").lower() and search_content in post.get("content").lower(),
+        POSTS
+    ))), 200
+
+
 def validate_post_data(body):
     return isinstance(body, dict) and all(key in body for key in POST_DATA)
 
