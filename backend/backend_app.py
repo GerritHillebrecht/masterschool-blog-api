@@ -14,7 +14,7 @@ POSTS = [
 
 @app.get('/api/posts')
 def get_posts():
-    return jsonify(POSTS)
+    return jsonify(POSTS), 200
 
 
 @app.post('/api/posts')
@@ -36,9 +36,8 @@ def add_post():
 
     title, content, *rest = body.values()
 
-    global POSTS
     post = {
-        "id": max(p.get("id", 0) for p in POSTS) + 1,
+        "id": max([p.get("id", 0) for p in POSTS], default=0) + 1,
         "title": title,
         "content": content
     }
@@ -65,6 +64,30 @@ def delete_post(post_id: int):
     return jsonify({
         "message": f"Post with id <{post_id}> has been deleted successfully."
     }), 200
+
+
+@app.put("/api/posts/<int:post_id>")
+def update_post(post_id: int):
+    try:
+        idx = [p.get("id") for p in POSTS].index(post_id)
+    except ValueError:
+        return jsonify({
+            "message": f'Post with id <{post_id}> not found.'
+        }), 404
+
+    body = request.get_json()
+
+    if not isinstance(body, dict):
+        return jsonify({
+            "message": f'Please provide data as json object.'
+        }), 422
+
+    POSTS[idx] = {
+        **POSTS[idx],
+        **body
+    }
+
+    return POSTS[idx], 200
 
 
 def validate_post_data(body):
