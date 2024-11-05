@@ -1,18 +1,26 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_login import LoginManager
+from flask_authorize import Authorize
+from middleware import RateLimitingMiddleware
+
+from data import POSTS, COMMENTS
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
 CORS(app)
 
-POST_DATA = ("title", "content")
+app.wsgi_app = RateLimitingMiddleware(app.wsgi_app)
 
-POSTS = [
-    {"id": 1, "title": "First post", "content": "This is the first post."},
-    {"id": 2, "title": "Second post", "content": "This is the second post."},
-]
+login = LoginManager()
+login.init_app(app)
+authorize = Authorize(app)
+
+POST_KEYS = ("title", "content", "categories", "tags")
+COMMENT_KEYS = ("post_id", "author", "comment")
 
 
-@app.get('/api/posts')
+@app.get('/api/v1/posts')
 def get_posts():
     """
     Returns all saved posts from temporary variable POSTS, so keep in mind there's regular resets
@@ -20,15 +28,15 @@ def get_posts():
     No pagination for now.
     :return: The potentially sorted posts.
     """
-    # Usually I'd go with the default-values "id" and "asc" for sort and direction
-    # but the assignment specifically wants it to be FiFo, so no alteration.
-    sort = request.args.get("sort")
-    direction = request.args.get("direction")
+    sort = request.args.get("sort", "id")
+    direction = request.args.get("direction", "desc")
+    page = int(request.args.get("page", 0))
+    page_size = int(request.args.get("page_size", 10))
 
-    if not sort or not direction:
-        return jsonify(POSTS), 200
+    pagination_start = page * page_size
+    pagination_end = pagination_start + page_size
 
-    if sort not in POST_DATA:
+    if sort not in [*POST_KEYS, "id"]:
         return jsonify({
             "message": f'Invalid sort key.'
         }), 422
@@ -38,16 +46,31 @@ def get_posts():
             "message": f'Invalid direction argument. Provide "desc" or "asc".'
         }), 422
 
+    sorted_posts = sorted(
+        POSTS,
+        key=lambda post: post.get(sort),
+        reverse=direction == "desc"
+    )
+
+    paginated_posts = sorted_posts[pagination_start:pagination_end]
+
+    posts_with_comments = map(
+        lambda post: {
+            **post,
+            "comments": list(filter(
+                lambda comment: comment.get("post_id") == post.get("id"),
+                COMMENTS
+            ))
+        },
+        paginated_posts
+    )
+
     return jsonify(list(
-        sorted(
-            POSTS,
-            key=lambda post: post.get(sort),
-            reverse=direction == "desc"
-        )
+        posts_with_comments
     ))
 
 
-@app.post('/api/posts')
+@app.post('/api/v1/posts')
 def add_post():
     """
     Takes in JSON body to add a post to the storage.
@@ -55,23 +78,13 @@ def add_post():
     """
     body = request.get_json()
 
-    if not validate_post_data(body):
-        error_msg = " and ".join(
-            filter(
-                lambda err: err,
-                (
-                    f'Missing data for: "{key}"' if key not in body else False
-                    for key in POST_DATA
-                )
-            )
-
-        )
-        return error_msg, 422
+    if not validate_request_body(body):
+        return create_error_for_missing_keys(body)
 
     title, content, *rest = body.values()
 
     post = {
-        "id": max([p.get("id", 0) for p in POSTS], default=0) + 1,
+        "id": create_id(POSTS),
         "title": title,
         "content": content
     }
@@ -81,7 +94,7 @@ def add_post():
     return jsonify(post), 201
 
 
-@app.delete("/api/posts/<int:post_id>")
+@app.delete("/api/v1/posts/<int:post_id>")
 def delete_post(post_id: int):
     """
     Removes the post with the given post_id from the storage.
@@ -105,7 +118,7 @@ def delete_post(post_id: int):
     }), 200
 
 
-@app.put("/api/posts/<int:post_id>")
+@app.put("/api/v1/posts/<int:post_id>")
 def update_post(post_id: int):
     """
     Updates a post based on the path id and provided json body.
@@ -134,7 +147,7 @@ def update_post(post_id: int):
     return POSTS[idx], 200
 
 
-@app.get("/api/posts/search")
+@app.get("/api/v1/posts/search")
 def search_posts():
     """
     Filters posts by given title and content arguments passed via query params.
@@ -149,13 +162,69 @@ def search_posts():
     ))), 200
 
 
-def validate_post_data(body):
+@app.get("/api/v1/comments")
+def get_comments():
+    return COMMENTS
+
+
+@app.post("/api/v1/comments")
+def add_comment():
+    """
+    Creates a comment based on the request body data.
+    :return: The created comment.
+    """
+    body = request.get_json()
+
+    if not validate_request_body(body, COMMENT_KEYS):
+        return create_error_for_missing_keys(body, COMMENT_KEYS)
+
+    comment = {
+        **body,
+        "id": create_id(COMMENTS),
+    }
+
+    COMMENTS.append(comment)
+
+    return jsonify(comment)
+
+
+def validate_request_body(body, keys=POST_KEYS):
     """
     Pre-checks request body for validity and completeness. No sanity checks.
     :param body: The request body.
+    :param keys: The keys that the body has to be checked against.
     :return: Boolean value for whether the post can be created based on the given data.
     """
-    return isinstance(body, dict) and all(key in body for key in POST_DATA)
+    return isinstance(body, dict) and all(key in body for key in keys)
+
+
+def create_error_for_missing_keys(body, keys=POST_KEYS):
+    """
+    Creates a missing data error message and combines it with the correct error-code 422.
+    :param body: The json data submitted by the request.
+    :param keys: The required keys to check against.
+    :return: A tuple with the error msg and the error code.
+    """
+    error_msg = " and ".join(
+        filter(
+            lambda err: err,
+            (
+                f'missing data for: "{key}"' if key not in body else False
+                for key in keys
+            )
+        )
+
+    )
+    return error_msg, 422
+
+
+def create_id(items) -> int:
+    """
+    Creates an id based on the already used ids in items. Always one-ups the currently highest id.
+    :param items: The list of items with ids that needs a new id.
+    :return: A new id.
+    """
+    return max([item["id"] for item in items], default=0) + 1
 
 
 if __name__ == '__main__':
