@@ -10,8 +10,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
-from data import COMMENTS, POSTS
 from middleware import RateLimitingMiddleware
+from storage.driver import read_from_storage, write_to_storage
 
 app = Flask(__name__)
 CORS(app)
@@ -30,8 +30,8 @@ swagger_ui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 app.wsgi_app = RateLimitingMiddleware(app.wsgi_app)
 
-POST_KEYS = ("title", "content", "categories", "tags", "author")
-COMMENT_KEYS = ("post_id", "author", "comment")
+PROPERTIES_POST = ("title", "content", "categories", "tags", "author")
+PROPERTIES_COMMAND = ("post_id", "author", "comment")
 
 
 @app.get('/api/v1/posts')
@@ -50,7 +50,7 @@ def get_posts():
     pagination_start = page * page_size
     pagination_end = pagination_start + page_size
 
-    if sort not in [*POST_KEYS, "id"]:
+    if sort not in [*PROPERTIES_POST, "id"]:
         return jsonify({
             "message": f'Invalid sort key.'
         }), 422
@@ -61,7 +61,7 @@ def get_posts():
         }), 422
 
     sorted_posts = sorted(
-        POSTS,
+        read_from_storage(),
         key=lambda post: post.get(sort),
         reverse=direction == "desc"
     )
@@ -73,7 +73,7 @@ def get_posts():
             **post,
             "comments": list(filter(
                 lambda comment: comment.get("post_id") == post.get("id"),
-                COMMENTS
+                read_from_storage(data_type="comments")
             ))
         },
         paginated_posts
@@ -95,14 +95,16 @@ def add_post():
     if not validate_request_body(body):
         return create_error_for_missing_keys(body)
 
+    posts = read_from_storage()
+
     post = {
-        "id": create_id(POSTS),
+        "id": create_id(posts),
         **body,
         "created_at": datetime.now(),
         "updated_at": datetime.now()
     }
 
-    POSTS.append(post)
+    write_to_storage([*posts, post])
 
     return jsonify(post), 201
 
@@ -114,17 +116,17 @@ def delete_post(post_id: int):
     :param post_id: The id of the post to delete.
     :return: A message object.
     """
-    global POSTS
-    if not post_id or post_id not in [p.get("id") for p in POSTS]:
+    posts = read_from_storage()
+    if not post_id or post_id not in [p.get("id") for p in posts]:
         return jsonify({
             "message": f'Post with id <{post_id}> not found.'
         }), 404
 
-    POSTS = [
+    write_to_storage([
         post
-        for post in POSTS
+        for post in posts
         if post.get("id") != post_id
-    ]
+    ])
 
     return jsonify({
         "message": f"Post with id <{post_id}> has been deleted successfully."
@@ -134,12 +136,14 @@ def delete_post(post_id: int):
 @app.put("/api/v1/posts/<int:post_id>")
 def update_post(post_id: int):
     """
-    Updates a post based on the path id and provided json body.
+    Updates a post based on the path-id and the provided json body.
     :param post_id: The id passed according to the path.
     :return: Returns the updated post.
     """
+    posts = read_from_storage()
+
     try:
-        idx = [p.get("id") for p in POSTS].index(post_id)
+        idx = [p.get("id") for p in posts].index(post_id)
     except ValueError:
         return jsonify({
             "message": f'Post with id <{post_id}> not found.'
@@ -149,16 +153,18 @@ def update_post(post_id: int):
 
     if not isinstance(body, dict):
         return jsonify({
-            "message": f'Please provide data as json object.'
+            "message": f'Please provide post-data as json object.'
         }), 422
 
-    POSTS[idx] = {
-        **POSTS[idx],
+    posts[idx] = {
+        **posts[idx],
         **body,
         "updated_at": datetime.now()
     }
 
-    return POSTS[idx], 200
+    write_to_storage(posts)
+
+    return posts[idx], 200
 
 
 @app.get("/api/v1/posts/search")
@@ -172,13 +178,16 @@ def search_posts():
 
     return jsonify(list(filter(
         lambda post: search_title in post.get("title").lower() and search_content in post.get("content").lower(),
-        POSTS
+        read_from_storage()
     ))), 200
 
 
 @app.get("/api/v1/comments")
 def get_comments():
-    return jsonify(list(map(format_dates, COMMENTS)))
+    return jsonify(list(map(
+        format_dates,
+        read_from_storage(data_type="comments")
+    )))
 
 
 @app.post("/api/v1/comments")
@@ -189,17 +198,19 @@ def add_comment():
     """
     body = request.get_json()
 
-    if not validate_request_body(body, COMMENT_KEYS):
-        return create_error_for_missing_keys(body, COMMENT_KEYS)
+    if not validate_request_body(body, keys=PROPERTIES_COMMAND):
+        return create_error_for_missing_keys(body, keys=PROPERTIES_COMMAND)
+
+    comments = read_from_storage(data_type="comments")
 
     comment = {
         **body,
-        "id": create_id(COMMENTS),
+        "id": create_id(comments),
         "created_at": datetime.now(),
         "updated_at": datetime.now()
     }
 
-    COMMENTS.append(comment)
+    write_to_storage([*comments, comment])
 
     return jsonify(format_dates(comment))
 
@@ -216,13 +227,13 @@ def get_specific_comments(post_id: int):
             lambda comment: comment.get("post_id") == post_id,
             map(
                 format_dates,
-                COMMENTS
+                read_from_storage(data_type="comments")
             )
         )
     ))
 
 
-def validate_request_body(body, keys=POST_KEYS):
+def validate_request_body(body, keys=PROPERTIES_POST):
     """
     Pre-checks request body for validity and completeness. No sanity checks.
     :param body: The request body.
@@ -232,7 +243,7 @@ def validate_request_body(body, keys=POST_KEYS):
     return isinstance(body, dict) and all(key in body for key in keys)
 
 
-def create_error_for_missing_keys(body, keys=POST_KEYS):
+def create_error_for_missing_keys(body, keys=PROPERTIES_POST):
     """
     Creates a missing data error message and combines it with the correct error-code 422.
     :param body: The json data submitted by the request.

@@ -1,0 +1,50 @@
+[
+  {
+    "author": "John Doe",
+    "comment": "What a comment this is. Incredible. Amazing. Astonishing.",
+    "created_at": "2024-11-06T14:55:20.388918",
+    "id": 1,
+    "post_id": 1,
+    "updated_at": "2024-11-06T14:55:20.388918"
+  },
+  {
+    "author": "John Doe",
+    "comment": "What a comment this is. Incredible. Amazing. Astonishing.",
+    "created_at": "2024-11-06T14:55:20.388918",
+    "id": 2,
+    "post_id": 1,
+    "updated_at": "2024-11-06T14:55:20.388918"
+  },
+  {
+    "author": "John Doe",
+    "comment": "What a comment this is. Incredible. Amazing. Astonishing.",
+    "created_at": "2024-11-06T14:55:20.388918",
+    "id": 3,
+    "post_id": 1,
+    "updated_at": "2024-11-06T14:55:20.388918"
+  },
+  {
+    "author": "Jane Doe",
+    "comment": "Very hateful strange comment. Better ignore it.",
+    "created_at": "2024-11-06T14:55:20.388918",
+    "id": 4,
+    "post_id": 2,
+    "updated_at": "2024-11-06T14:55:20.388918"
+  },
+  {
+    "author": "Jane Doe",
+    "comment": "Very hateful strange comment. Better ignore it.",
+    "created_at": "2024-11-06T14:55:20.388918",
+    "id": 5,
+    "post_id": 2,
+    "updated_at": "2024-11-06T14:55:20.388918"
+  },
+  {
+    "author": "Jane Doe",
+    "comment": "Very hateful strange comment. Better ignore it.",
+    "created_at": "2024-11-06T14:55:20.388918",
+    "id": 6,
+    "post_id": 2,
+    "updated_at": "2024-11-06T14:55:20.388918"
+  }
+]

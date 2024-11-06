@@ -4,19 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b27f0fca-7f1c-42ce-8d1b-a23dcf5bbfa6" name="Changes" comment="[api][feat] added versioning and rate-limiting">
-      <change afterPath="$PROJECT_DIR$/backend/static/masterblog.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b27f0fca-7f1c-42ce-8d1b-a23dcf5bbfa6" name="Changes" comment="[api][feat] added dates and author">
+      <change afterPath="$PROJECT_DIR$/backend/storage/comments.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/storage/driver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/storage/posts.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/data.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -224,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730810236288</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="[api][feat] added dates and author">
+      <option name="closed" value="true" />
+      <created>1730900691375</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1730900691375</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -235,6 +249,7 @@
     <MESSAGE value="[api][feat] added search route" />
     <MESSAGE value="[api][feat] added ability to sort results" />
     <MESSAGE value="[api][feat] added versioning and rate-limiting" />
-    <option name="LAST_COMMIT_MESSAGE" value="[api][feat] added versioning and rate-limiting" />
+    <MESSAGE value="[api][feat] added dates and author" />
+    <option name="LAST_COMMIT_MESSAGE" value="[api][feat] added dates and author" />
   </component>
 </project>
