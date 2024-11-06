@@ -630,6 +630,41 @@
           }
         }
       }
+    },
+    "/api/v1/comments/{comment_id}": {
+      "delete": {
+        "summary": "Deletes comment by id.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "type": "integer",
+            "required": true,
+            "description": "The ID of the comment",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Comment with the id <1> has been deleted successfully."
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

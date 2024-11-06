@@ -20,9 +20,18 @@ body {
 }
 
 .input-field {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     align-items: center;
     margin-bottom: 20px;
+
+}
+
+@media screen and (min-width: 1000px) {
+    .input-field {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .input-field input,
@@ -74,7 +83,7 @@ body {
     color: #333;
 }
 
-.post button {
+.post button.btn-delete {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -86,6 +95,23 @@ body {
     cursor: pointer;
 }
 
-.post button:hover {
+.post button.btn-delete:hover {
     background-color: #cc0000;
+}
+
+.post textarea {
+    width: 100%;
+    display: block;
+    border: none;
+    outline: none;
+    margin-block: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.comment-box {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    position: relative;
 }

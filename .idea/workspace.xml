@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b27f0fca-7f1c-42ce-8d1b-a23dcf5bbfa6" name="Changes" comment="[api][feat] added dates and author">
-      <change afterPath="$PROJECT_DIR$/backend/storage/comments.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/storage/driver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/storage/posts.json" afterDir="false" />
+    <list default="true" id="b27f0fca-7f1c-42ce-8d1b-a23dcf5bbfa6" name="Changes" comment="[api][feat] added json-storage">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/static/masterblog.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/static/masterblog.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/storage/comments.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/comments.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/storage/driver.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/driver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/storage/posts.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/posts.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730900691375</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="[api][feat] added json-storage">
+      <option name="closed" value="true" />
+      <created>1730910277106</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1730910277106</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -250,6 +261,7 @@
     <MESSAGE value="[api][feat] added ability to sort results" />
     <MESSAGE value="[api][feat] added versioning and rate-limiting" />
     <MESSAGE value="[api][feat] added dates and author" />
-    <option name="LAST_COMMIT_MESSAGE" value="[api][feat] added dates and author" />
+    <MESSAGE value="[api][feat] added json-storage" />
+    <option name="LAST_COMMIT_MESSAGE" value="[api][feat] added json-storage" />
   </component>
 </project>

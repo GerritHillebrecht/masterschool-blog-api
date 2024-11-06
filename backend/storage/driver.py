@@ -10,9 +10,9 @@ TYPES = {
 }
 
 # Make sure all storage files exit
-for path in TYPES:
-    if not path.find(path):
-        open(path, "x")
+for type_path in TYPES:
+    if not path.exists(type_path):
+        open(type_path, "x")
 
 
 def read_from_storage(data_type="posts") -> list[dict]:

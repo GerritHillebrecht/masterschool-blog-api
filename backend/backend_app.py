@@ -31,7 +31,7 @@ app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 app.wsgi_app = RateLimitingMiddleware(app.wsgi_app)
 
 PROPERTIES_POST = ("title", "content", "categories", "tags", "author")
-PROPERTIES_COMMAND = ("post_id", "author", "comment")
+PROPERTIES_COMMAND = ("post_id", "author", "title", "comment")
 
 
 @app.get('/api/v1/posts')
@@ -117,16 +117,26 @@ def delete_post(post_id: int):
     :return: A message object.
     """
     posts = read_from_storage()
+    comments = read_from_storage(data_type="comments")
+
     if not post_id or post_id not in [p.get("id") for p in posts]:
         return jsonify({
             "message": f'Post with id <{post_id}> not found.'
         }), 404
 
+    # Delete Post
     write_to_storage([
         post
         for post in posts
         if post.get("id") != post_id
     ])
+
+    # Delete comments of that post
+    write_to_storage([
+        comment
+        for comment in comments
+        if comment.get("post_id") != post_id
+    ], data_type="comments")
 
     return jsonify({
         "message": f"Post with id <{post_id}> has been deleted successfully."
@@ -184,6 +194,9 @@ def search_posts():
 
 @app.get("/api/v1/comments")
 def get_comments():
+    """
+    Returns all comments.
+    """
     return jsonify(list(map(
         format_dates,
         read_from_storage(data_type="comments")
@@ -210,7 +223,7 @@ def add_comment():
         "updated_at": datetime.now()
     }
 
-    write_to_storage([*comments, comment])
+    write_to_storage([*comments, comment], data_type="comments")
 
     return jsonify(format_dates(comment))
 
@@ -231,6 +244,29 @@ def get_specific_comments(post_id: int):
             )
         )
     ))
+
+
+@app.delete("/api/v1/comments/<int:comment_id>")
+def delete_comment(comment_id: int):
+    """
+    Deletes a comment by id.
+    :param comment_id: Id provided by the path.
+    """
+    comments = read_from_storage(data_type="comments")
+
+    if comment_id not in [c.get("id") for c in comments]:
+        return jsonify({
+            "message": f'Comment with id <{comment_id}> not found.'
+        }), 404
+
+    write_to_storage(list(filter(
+        lambda comment: comment.get("id") != comment_id,
+        comments
+    )))
+
+    return jsonify({
+        "message": f"Comment with id <{comment_id}> has been deleted successfully."
+    }), 200
 
 
 def validate_request_body(body, keys=PROPERTIES_POST):
@@ -260,7 +296,7 @@ def create_error_for_missing_keys(body, keys=PROPERTIES_POST):
         )
 
     )
-    return error_msg, 422
+    return {"message": error_msg}, 422
 
 
 def create_id(items) -> int:
@@ -273,6 +309,11 @@ def create_id(items) -> int:
 
 
 def format_dates(item: dict) -> dict:
+    """
+    Formats items for the front-end. Replaces date-objects with iso-dates.
+    :param item: Item holding "created_at" and "updated_at" date-objects.
+    :return: Item with iso-dates.
+    """
     return {
         **item,
         "created_at": item.get("created_at").isoformat(),
