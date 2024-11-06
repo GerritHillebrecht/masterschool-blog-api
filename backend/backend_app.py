@@ -1,22 +1,36 @@
+"""
+There's no authorization for now. Having users saved in a database but not the posts & comments feels weird.
+Also takes up at least as much time as the main task. Gonna add authorization to apps when databases are
+handled. Also we should create a proper flask app first using the __init__.py.
+"""
+
+from datetime import datetime
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_login import LoginManager
-from flask_authorize import Authorize
+from flask_swagger_ui import get_swaggerui_blueprint
+
+from data import COMMENTS, POSTS
 from middleware import RateLimitingMiddleware
 
-from data import POSTS, COMMENTS
-
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
 CORS(app)
 
+SWAGGER_URL = "/api/docs"  # (1) swagger endpoint e.g. HTTP://localhost:5002/api/docs
+API_URL = "/static/masterblog.json"  # (2) ensure you create this dir and file
+
+swagger_ui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': 'Masterblog API'  # (3) You can change this if you like
+    }
+)
+
+app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 app.wsgi_app = RateLimitingMiddleware(app.wsgi_app)
 
-login = LoginManager()
-login.init_app(app)
-authorize = Authorize(app)
-
-POST_KEYS = ("title", "content", "categories", "tags")
+POST_KEYS = ("title", "content", "categories", "tags", "author")
 COMMENT_KEYS = ("post_id", "author", "comment")
 
 
@@ -81,12 +95,11 @@ def add_post():
     if not validate_request_body(body):
         return create_error_for_missing_keys(body)
 
-    title, content, *rest = body.values()
-
     post = {
         "id": create_id(POSTS),
-        "title": title,
-        "content": content
+        **body,
+        "created_at": datetime.now(),
+        "updated_at": datetime.now()
     }
 
     POSTS.append(post)
@@ -141,7 +154,8 @@ def update_post(post_id: int):
 
     POSTS[idx] = {
         **POSTS[idx],
-        **body
+        **body,
+        "updated_at": datetime.now()
     }
 
     return POSTS[idx], 200
@@ -164,7 +178,7 @@ def search_posts():
 
 @app.get("/api/v1/comments")
 def get_comments():
-    return COMMENTS
+    return jsonify(list(map(format_dates, COMMENTS)))
 
 
 @app.post("/api/v1/comments")
@@ -181,11 +195,31 @@ def add_comment():
     comment = {
         **body,
         "id": create_id(COMMENTS),
+        "created_at": datetime.now(),
+        "updated_at": datetime.now()
     }
 
     COMMENTS.append(comment)
 
-    return jsonify(comment)
+    return jsonify(format_dates(comment))
+
+
+@app.get("/api/v1/comments/<int:post_id>")
+def get_specific_comments(post_id: int):
+    """
+    Returns all comments of a specific post.
+    :param post_id: The id of the post.
+    :return: All comments belonging to that post.
+    """
+    return jsonify(list(
+        filter(
+            lambda comment: comment.get("post_id") == post_id,
+            map(
+                format_dates,
+                COMMENTS
+            )
+        )
+    ))
 
 
 def validate_request_body(body, keys=POST_KEYS):
@@ -225,6 +259,14 @@ def create_id(items) -> int:
     :return: A new id.
     """
     return max([item["id"] for item in items], default=0) + 1
+
+
+def format_dates(item: dict) -> dict:
+    return {
+        **item,
+        "created_at": item.get("created_at").isoformat(),
+        "updated_at": item.get("updated_at").isoformat()
+    }
 
 
 if __name__ == '__main__':
