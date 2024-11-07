@@ -19,6 +19,12 @@ UserRole = db.Table(
     db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
 )
 
+UserBlogpost = db.Table(
+    "user_blogpost", db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('blogpost_id', db.Integer, db.ForeignKey('blogposts.id'))
+)
+
 
 # models
 class User(db.Model):
@@ -47,7 +53,7 @@ class Role(db.Model, AllowancesMixin):
     name = db.Column(db.String(255), nullable=False, unique=True)
 
 
-class Blogplost(db.Model, ):
+class Blogpost(db.Model, ):
     __tablename__ = "blogposts"
     __permissions__ = dict(
         owner=['read', 'update', 'delete', 'revoke'],
@@ -57,19 +63,7 @@ class Blogplost(db.Model, ):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
+    author = db.relationship(User, secondary=UserBlogpost)
     content = db.Column(db.Text)
     categories = db.Column(db.Text)
     tags = db.Column(db.text)
-
-
-# class Article(db.Model, PermissionsMixin):
-#     __tablename__ = 'articles'
-#     __permissions__ = dict(
-#         owner=['read', 'update', 'delete', 'revoke'],
-#         group=['read', 'update'],
-#         other=['read']
-#     )
-#
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(255), index=True, nullable=False)
-#     content = db.Column(db.Text)

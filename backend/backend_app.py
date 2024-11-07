@@ -1,7 +1,9 @@
 """
 There's no authorization for now. Having users saved in a database but not the posts & comments feels weird.
 Also takes up at least as much time as the main task. Gonna add authorization to apps when databases are
-handled. Also we should create a proper flask app first using the __init__.py.
+handled.
+Also no likes. Adding extra swagger documentation for a new add-like route is too much work for such a little
+feature.
 """
 
 from datetime import datetime

@@ -10,7 +10,7 @@ TYPES = {
 }
 
 # Make sure all storage files exit
-for type_path in TYPES:
+for type_path in TYPES.values():
     if not path.exists(type_path):
         open(type_path, "x")
 
@@ -107,5 +107,9 @@ def format_iso_date(date_object):
 
 
 def validate_item(item: dict):
+    """
+    Validate that a given item has properties "created_at" and "updated_at".
+    :param item: The item to check
+    """
     if "created_at" not in item or "updated_at" not in item:
         raise ValueError("Provide a valid item.")

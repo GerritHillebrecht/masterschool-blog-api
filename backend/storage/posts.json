@@ -1,1 +1,19 @@
-[{"id": 1, "title": "The first real post", "content": "A full post written in an input field. No textarea needed. Yay!", "author": "Gerrit", "categories": ["Blog", "Happy"], "tags": ["late", "funny", "hawt"], "created_at": "2024-11-06T22:18:47.857665", "updated_at": "2024-11-06T22:18:47.857665"}]
+[
+  {
+    "id": 1,
+    "title": "The first real post",
+    "content": "A full post written in an input field. No textarea needed. Yay!",
+    "author": "Gerrit",
+    "categories": [
+      "Blog",
+      "Happy"
+    ],
+    "tags": [
+      "late",
+      "funny",
+      "hawt"
+    ],
+    "created_at": "2024-11-06T22:18:47.857665",
+    "updated_at": "2024-11-06T22:18:47.857665"
+  }
+]

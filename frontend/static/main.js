@@ -20,50 +20,7 @@ function loadPosts() {
         .then(response => response.json())  // Parse the JSON data from the response
         .then(data => {  // Once the data is ready, we can use it
             // Clear out the post container first
-            const postContainer = document.getElementById('post-container');
-            postContainer.innerHTML = '';
-
-            // For each post in the response, create a new post element and add it to the page
-            data.forEach((post, index) => {
-                tags = post.tags.map(tag => `<span class="badge rounded-pill text-bg-primary">${tag}</span>`).join("")
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post card';
-                postDiv.innerHTML = `
-                    <div class="card-body">
-                        <h2 class="card-title">${post.title}</h2>
-                        <div class="d-flex align-items-center gap-1">
-                            ${tags}
-                        </div>
-                        <p class="card-text">${post.content}</p>
-                        <button class="btn-delete" onclick="deletePost(${post.id})">Delete</button>
-                        <hr />
-                        <p class="">Comments</p>
-                        <div class="input-field">
-                            <input id="author-${post.id}" type="text" placeholder="Your name" />
-                            <input id="title-${post.id}" type="text" placeholder="Title of your comment" />
-                        </div>
-                        <textarea id="comment-${post.id}" placeholder="Add a new comment" rows="3"></textarea>
-                        <button class="btn btn-primary" onclick="addComment(${post.id})">Add Comment</button>
-                    </div>
-                `;
-                const commentBoxDiv = document.createElement("div");
-                commentBoxDiv.className = "comment-box";
-                post.comments.forEach(comment => {
-                    const commentDiv = document.createElement("div");
-                    commentDiv.className = "card";
-                    commentDiv.innerHTML = `
-                        <div class="card-body">
-                            <span class="badge rounded-pill text-bg-primary">${comment.author}</span>
-                            <h5 class="card-title">${comment.title}</h5>
-                            <p class="card-text">${comment.comment}</p>
-                            <button class="btn-delete" onclick="deleteComment(${comment.id})">Delete</button>
-                        </div>
-                    `;
-                    commentBoxDiv.appendChild(commentDiv)
-                })
-                postDiv.appendChild(commentBoxDiv)
-                postContainer.appendChild(postDiv);
-            });
+            build_posts(data)
         })
         .catch(error => console.error('Error:', error));  // If an error occurs, log it to the console
 }
@@ -158,4 +115,89 @@ function deleteComment(commentId) {
         loadPosts(); // Reload the posts after deleting one
     })
     .catch(error => console.error('Error:', error));  // If an error occurs, log it to the console
+}
+
+function veryShittySearch() {
+    const baseUrl = document.getElementById('api-base-url').value;
+    const search_str = document.getElementById("search_bar").value;
+
+    if (!search_str) {
+        return alert("Please enter a search string.")
+    }
+
+    const asd = {
+        "title": document.getElementById("checked_title").checked,
+        "content": document.getElementById("checked_content").checked
+    };
+
+    hasSelection = Object.values(asd).some(value => value)
+
+    if (!hasSelection) {
+        return alert("Please decide WHERE you want to search.")
+    }
+
+    search_string = Object.keys(asd).filter(key => asd[key]).map(key => `${key}=${search_str}`).join("&")
+    searchURI = `${baseUrl}/posts/search?${search_string}`
+
+    fetch(searchURI)
+        .then(response => response.json())  // Parse the JSON data from the response
+        .then(data => {  // Once the data is ready, we can use it
+            // Clear out the post container first
+            build_posts(data)
+        })
+        .catch(error => console.error('Error:', error));  // If an error occurs, log it to the console
+
+}
+
+function build_posts(data) {
+    const postContainer = document.getElementById('post-container');
+    postContainer.innerHTML = '';
+
+    // For each post in the response, create a new post element and add it to the page
+    data.forEach((post, index) => {
+        tags = post.tags.map(tag => `<span class="badge rounded-pill text-bg-secondary">${tag}</span>`).join("")
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post card';
+        postDiv.innerHTML = `
+            <div class="card-body">
+                <h2 class="card-title">${post.title}</h2>
+                <div class="d-flex align-items-center gap-1">
+                    ${tags}
+                </div>
+                <hr />
+                <p class="card-text">${post.content}</p>
+                <button class="btn-delete" onclick="deletePost(${post.id})">Delete</button>
+                <hr />
+
+                <p class="">Comments</p>
+                <div class="input-field-group">
+                    <div class="input-field">
+                        <input id="author-${post.id}" type="text" placeholder="Your name" />
+                    </div>
+                    <div class="input-field">
+                        <input id="title-${post.id}" type="text" placeholder="Title of your comment" />
+                    </div>
+                </div>
+                <textarea id="comment-${post.id}" placeholder="Add a new comment" rows="3"></textarea>
+                <button class="btn btn-primary" onclick="addComment(${post.id})">Add Comment</button>
+            </div>
+        `;
+        const commentBoxDiv = document.createElement("div");
+        commentBoxDiv.className = "comment-box p-3";
+        post.comments?.forEach(comment => {
+            const commentDiv = document.createElement("div");
+            commentDiv.className = "card";
+            commentDiv.innerHTML = `
+                <div class="card-body">
+                    <span class="badge rounded-pill text-bg-primary">${comment.author}</span>
+                    <h5 class="card-title">${comment.title}</h5>
+                    <p class="card-text">${comment.comment}</p>
+                    <button class="btn-delete" onclick="deleteComment(${comment.id})">Delete</button>
+                </div>
+            `;
+            commentBoxDiv.appendChild(commentDiv)
+        })
+        postDiv.appendChild(commentBoxDiv)
+        postContainer.appendChild(postDiv);
+    });
 }
