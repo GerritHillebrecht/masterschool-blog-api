@@ -1,0 +1,20 @@
+<header class="flex items-center shadow border-b dark:border-b-neutral-900 bg-white/80 dark:bg-neutral-950/80 backdrop-blur h-16 backdrop-saturate px-4 sticky z-50 top-0">
+    <nav class="flex items-center w-full justify-between max-w-7xl mx-auto">
+        <a href="/" class="logo-text text-4xl dark:text-white flex items-center gap-2">
+            <img class="h-10 aspect-square" alt="Logo" src="{{url_for('static',filename='images/logo_pap.png')}}" />
+            {{app_title}}
+        </a>
+        {% include "components/navbar_menu.html" %}
+        <div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
+            {% include "components/dark-mode-selector.html" %}
+            <a href="/auth/login"
+               class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                Login
+            </a>
+            <a href="/auth/register"
+               class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                Sign up
+            </a>
+        </div>
+    </nav>
+</header>

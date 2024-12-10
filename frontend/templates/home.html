@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="relative flex flex-col items-center justify-center h-[calc(100vh_-_4rem)]">
+    <iframe class="hero-inner absolute inset-0 block"
+            src='https://my.spline.design/worldplanet-971edc4fcf301629f893c164e5233582/'
+            frameborder='0'
+            width='100%'
+            height='100%'></iframe>
+    <div class="hero-text relative z-10 text-center">
+        <h1 class="text-white/60 logo-text text-7xl">{{app_title}}</h1>
+        <p class="text-white/40">Number one source of pixel-related content</p>
+    </div>
+</div>
+<div class="relative z-10 bg-white dark:bg-neutral-800 py-20">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-6xl text-center">Recent Reflections</h1>
+        <p class="text-center opacity-70">Discover the latest musings and insights from our blog, crafted to inspire and
+            inform.</p>
+        <div class="grid grid-cols-3 gap-6 mt-8">
+            {% for post in posts %}
+                {% include "components/blog/blog-card.html" with context %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_imports %}
+<script src="{{url_for('static',filename='js/parallax.js')}}"></script>
+{% endblock %}

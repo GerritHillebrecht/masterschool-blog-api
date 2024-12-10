@@ -1,0 +1,685 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Pen & Pixel API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5002"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Post",
+      "description": "Post API - CRUD"
+    },
+    {
+      "name": "Comment",
+      "description": "Comment API - CRUD"
+    }
+  ],
+  "paths": {
+    "/api/v1/posts": {
+      "get": {
+        "summary": "Returns all posts",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Defines the field to sort by.",
+            "example": "id"
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Defines the field to sort by.",
+            "example": "desc"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Defines the field to sort by.",
+            "example": 1
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Defines the field to sort by.",
+            "example": 10
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "The post id",
+                    "example": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the post.",
+                    "example": "John Doe on tour"
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Today I went on a bike tour with my lovely wife, when suddenly,..."
+                  },
+                  "comments": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "id": 1,
+                        "post_id": 1,
+                        "title": "Booooring af.",
+                        "comment": "Got dumber while reading this."
+                      }
+                    ]
+                  },
+                  "categories": {
+                    "type": "array",
+                    "example": [
+                      "Activities",
+                      "My personal life"
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "example": [
+                      "biking",
+                      "quality time",
+                      "outdoor",
+                      "jack wolfskin"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Adds a post",
+        "tags": [
+          "Post"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "The data of the post to create",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "The post title",
+                  "example": "John Doe bakes cookies"
+                },
+                "author": {
+                  "type": "string",
+                  "description": "The name of the author.",
+                  "example": "John Doe"
+                },
+                "image": {
+                  "type": "string",
+                  "description": "A image for the post.",
+                  "example": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=820&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "The content of the blog post. For now, markdown is not supported.",
+                  "example": "Once upon a time there was a little boy who..."
+                },
+                "categories": {
+                  "type": "array",
+                  "description": "The categories the post should have",
+                  "example": [
+                    "Food",
+                    "Healthy living"
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "The tags the post should have",
+                  "example": [
+                    "cooking",
+                    "meat",
+                    "veggy",
+                    "quick",
+                    "fast",
+                    "short",
+                    "healthy"
+                  ]
+                }
+              },
+              "required": [
+                "title",
+                "content",
+                "categories",
+                "tags",
+                "author"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The post id",
+                  "example": 1
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The title of the post.",
+                  "example": "John Doe bakes cookies"
+                },
+                "author": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Once upon a time there was a little boy who..."
+                },
+                "comments": {
+                  "type": "array",
+                  "example": []
+                },
+                "categories": {
+                  "type": "array",
+                  "example": [
+                    "Food",
+                    "Healthy living"
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "example": [
+                    "cooking",
+                    "meat",
+                    "veggy",
+                    "quick",
+                    "fast",
+                    "short",
+                    "healthy"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{post_id}": {
+      "put": {
+        "summary": "Updates a post",
+        "tags": [
+          "Post"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "type": "integer",
+            "required": true,
+            "description": "The ID of the post",
+            "example": 1
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "The post title",
+                  "example": "Updated Title"
+                },
+                "image": {
+                  "type": "string",
+                  "description": "A image for the post.",
+                  "example": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=820&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "The post content",
+                  "example": "Updated Content"
+                },
+                "author": {
+                  "type": "string",
+                  "description": "The author",
+                  "example": "John Doe"
+                },
+                "categories": {
+                  "type": "array",
+                  "description": "Categories of the post.",
+                  "example": [
+                    "Activities",
+                    "My personal life"
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "example": [
+                    "biking",
+                    "quality time",
+                    "outdoor",
+                    "jack wolfskin"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The id of the post",
+                  "example": 1
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The post title",
+                  "example": "Updated Title"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "The post content",
+                  "example": "Updated Content"
+                },
+                "author": {
+                  "type": "string",
+                  "description": "The author",
+                  "example": "John Doe"
+                },
+                "comments": {
+                  "type": "array",
+                  "description": "The comments of the posts.",
+                  "example": []
+                },
+                "categories": {
+                  "type": "array",
+                  "description": "Categories of the post.",
+                  "example": [
+                    "Activities",
+                    "My personal life"
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "example": [
+                    "biking",
+                    "quality time",
+                    "outdoor",
+                    "jack wolfskin"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a post",
+        "tags": [
+          "Post"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "type": "integer",
+            "required": true,
+            "description": "The ID of the post",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Return message",
+                  "example": "Post with id <1> has been deleted successfully."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/search": {
+      "get": {
+        "summary": "Returns filtered posts",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Filter by the post title",
+            "example": "bakes"
+          },
+          {
+            "name": "content",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Filter by the post content",
+            "example": "Once upon a time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "The post id",
+                    "example": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the post.",
+                    "example": "John Doe on tour"
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Today I went on a bike tour with my lovely wife, when suddenly,..."
+                  },
+                  "comments": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "id": 1,
+                        "post_id": 1,
+                        "title": "Booooring af.",
+                        "comment": "Got dumber while reading this."
+                      }
+                    ]
+                  },
+                  "categories": {
+                    "type": "array",
+                    "example": [
+                      "Activities",
+                      "My personal life"
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "example": [
+                      "biking",
+                      "quality time",
+                      "outdoor",
+                      "jack wolfskin"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comments": {
+      "get": {
+        "summary": "Returns all comments",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Comment"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "post_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "My eyes! What am I reading?"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "example": "To most people this post would be embarrassing to publish under their name."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Adds a comment",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "The data of the post to create",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "post_id": {
+                  "type": "integer",
+                  "description": "The ID of the post its written for.",
+                  "example": 1
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The comment's title",
+                  "example": "My IQ, it's dropping!"
+                },
+                "author": {
+                  "type": "string",
+                  "description": "The name of the author.",
+                  "example": "John Doe"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "The content of the comment. For now, markdown is not supported.",
+                  "example": "I vote for trump. Everything I say can safely be interpreted as the opinion of an idiot."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The comment's title",
+                  "example": "My IQ, it's dropping!"
+                },
+                "author": {
+                  "type": "string",
+                  "description": "The name of the author.",
+                  "example": "John Doe"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "The content of the comment. For now, markdown is not supported.",
+                  "example": "I vote for trump. Everything I say can safely be interpreted as the opinion of an idiot."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comments/{post_id}": {
+      "get": {
+        "summary": "Returns all comments for a specific post",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "type": "integer",
+            "required": true,
+            "description": "The ID of the post",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "post_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "My eyes! What am I reading?"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "example": "To most people this post would be embarrassing to publish under their name."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comments/{comment_id}": {
+      "delete": {
+        "summary": "Deletes comment by id.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Comment"
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "type": "integer",
+            "required": true,
+            "description": "The ID of the comment",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Comment with the id <1> has been deleted successfully."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

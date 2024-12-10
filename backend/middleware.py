@@ -1,5 +1,6 @@
-from ratelimiter import RateLimiter
 from flask import Response
+
+from backend.middlewares.ratelimiter import RateLimiter
 
 
 class RateLimitingMiddleware:

@@ -80,7 +80,7 @@ class RateLimiter:
             if len(self.__bucket) > self.__max_tokens:
                 self.__bucket = self.__bucket[:self.__max_tokens]
 
-            print(f"{"-" * 5} Bucket filled to {len(self.__bucket)} tokens {"-" * 5}")
+            print(f'{"-" * 5} Bucket filled to {len(self.__bucket)} tokens {"-" * 5}')
 
     def __add_tokens_to_local_variable_bucket(self, new_tokens) -> None:
         """

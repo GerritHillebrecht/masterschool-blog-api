@@ -1,5 +1,5 @@
-from json import dumps, loads, JSONDecodeError
 from datetime import datetime
+from json import dumps, loads, JSONDecodeError
 from os import path, getcwd
 
 # The supported data types. For now, posts and comments.

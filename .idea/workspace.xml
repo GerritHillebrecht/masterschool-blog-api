@@ -4,15 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b27f0fca-7f1c-42ce-8d1b-a23dcf5bbfa6" name="Changes" comment="[api][feat] uglified the frontend">
+    <list default="true" id="b27f0fca-7f1c-42ce-8d1b-a23dcf5bbfa6" name="Changes" comment="[api][feat] added unversioned files">
+      <change afterPath="$PROJECT_DIR$/backend/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/middlewares/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/routes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/routes/api_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/dal/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/dal/data_access_layer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/routes/frontend_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/css/404.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/css/global.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/css/input.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/images/logo_pap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/images/portrait.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/js/parallax.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/js/theme.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/static/swagger.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/blog/blog-card.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/blog/chat-bubble.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/dark-mode-selector.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/movie_card.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/navbar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/navbar_menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/search_bar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/toast.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/components/user-card.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/error.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/swagger_ui_with_navbar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/templates/view_blog_post.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/utils/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/middleware.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/ratelimiter.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/middlewares/ratelimiter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/static/masterblog.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/static/swagger.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/storage/comments.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/comments.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/storage/driver.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/driver.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/storage/posts.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/storage/posts.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/frontend_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/frontend_app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,22 +91,28 @@
   &quot;keyToString&quot;: {
     &quot;Python.backend_app.executor&quot;: &quot;Run&quot;,
     &quot;Python.frontend_app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Development/MasterSchool/masterschool-blog-api&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Development/MasterSchool/masterschool-blog-api/frontend/static&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Development\MasterSchool\masterschool-blog-api" />
-      <recent name="C:\Development\MasterSchool\masterschool-blog-api\backend" />
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\frontend\static" />
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\frontend\templates" />
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\frontend\static\css" />
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\frontend\static\images" />
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\frontend\static\js" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\backend\middleware" />
+      <recent name="C:\Development\MasterSchool\masterschool-blog-api\frontend\static\images" />
       <recent name="C:\Development\MasterSchool\masterschool-blog-api\backend" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.backend_app">
+  <component name="RunManager" selected="Python.frontend_app">
     <configuration name="backend_app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="masterschool-blog-api" />
       <option name="ENV_FILES" value="" />
@@ -139,8 +181,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.backend_app" />
         <item itemvalue="Python.frontend_app" />
+        <item itemvalue="Python.backend_app" />
       </list>
     </recent_temporary>
   </component>
@@ -256,7 +298,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730928616402</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="[api][feat] added search support">
+      <option name="closed" value="true" />
+      <created>1730991349094</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1730991349094</updated>
+    </task>
+    <task id="LOCAL-00014" summary="[api][feat] added unversioned files">
+      <option name="closed" value="true" />
+      <created>1730991507225</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1730991507225</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -270,6 +328,8 @@
     <MESSAGE value="[api][feat] added dates and author" />
     <MESSAGE value="[api][feat] added json-storage" />
     <MESSAGE value="[api][feat] uglified the frontend" />
-    <option name="LAST_COMMIT_MESSAGE" value="[api][feat] uglified the frontend" />
+    <MESSAGE value="[api][feat] added search support" />
+    <MESSAGE value="[api][feat] added unversioned files" />
+    <option name="LAST_COMMIT_MESSAGE" value="[api][feat] added unversioned files" />
   </component>
 </project>
